@@ -15,7 +15,6 @@
  */
 package com.example.android.sunshine.app;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -32,8 +31,6 @@ import android.widget.EditText;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class LocationEditTextPreference extends EditTextPreference {
@@ -81,22 +78,22 @@ public class LocationEditTextPreference extends EditTextPreference {
                 // an activity that we can use to start our Place Picker intent. By using
                 // SettingsActivity in this way, we can ensure the result of the Place Picker
                 // intent comes to the right place for us to process it.
-                Activity settingsActivity = (SettingsActivity) context;
-                try {
-                    settingsActivity.startActivityForResult(
-                            builder.build(context), SettingsActivity.PLACE_PICKER_REQUEST);
-
-                } catch (GooglePlayServicesNotAvailableException
-                        | GooglePlayServicesRepairableException e) {
-                    // What did you do?? This is why we check Google Play services in onResume!!!
-                    // The difference in these exception types is the difference between pausing
-                    // for a moment to prompt the user to update/install/enable Play services vs
-                    // complete and utter failure.
-                    // If you prefer to manage Google Play services dynamically, then you can do so
-                    // by responding to these exceptions in the right moment. But I prefer a cleaner
-                    // user experience, which is why you check all of this when the app resumes,
-                    // and then disable/enable features based on that availability.
-                }
+//                Activity settingsActivity = (SettingsActivity) context;
+//                try {
+//                    settingsActivity.startActivityForResult(
+//                            builder.build(SettingsActivity.this), SettingsActivity.PLACE_PICKER_REQUEST);
+//
+//                } catch (GooglePlayServicesNotAvailableException
+//                        | GooglePlayServicesRepairableException e) {
+//                    // What did you do?? This is why we check Google Play services in onResume!!!
+//                    // The difference in these exception types is the difference between pausing
+//                    // for a moment to prompt the user to update/install/enable Play services vs
+//                    // complete and utter failure.
+//                    // If you prefer to manage Google Play services dynamically, then you can do so
+//                    // by responding to these exceptions in the right moment. But I prefer a cleaner
+//                    // user experience, which is why you check all of this when the app resumes,
+//                    // and then disable/enable features based on that availability.
+//                }
             }
         });
 

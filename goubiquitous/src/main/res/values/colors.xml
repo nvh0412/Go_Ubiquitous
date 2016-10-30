@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="primary">#03A9F4</color>
+  <color name="digital_date">#ffffff</color>
+  <color name="digital_am_pm">#ffffff</color>
+  <color name="digital_colons">#ffffff</color>
+</resources>
