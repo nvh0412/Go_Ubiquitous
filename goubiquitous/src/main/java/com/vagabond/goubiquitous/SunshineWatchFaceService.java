@@ -458,8 +458,6 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
             // If the DataItem hasn't been created yet or some keys are missing,
             // use the default values.
             setDefaultValuesForMissingConfigKeys(startupConfig);
-            DigitalWatchFaceUtil.putConfigDataItem(mGoogleApiClient, startupConfig);
-
             updateUiForConfigDataMap(startupConfig);
           }
         }
@@ -551,7 +549,6 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
         Log.d(TAG, "onConnected: " + connectionHint);
       }
       Wearable.DataApi.addListener(mGoogleApiClient, Engine.this);
-      updateConfigDataItemAndUiOnStartup();
     }
 
     @Override  // GoogleApiClient.ConnectionCallbacks
