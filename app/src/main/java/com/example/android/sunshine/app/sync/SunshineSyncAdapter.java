@@ -24,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.format.Time;
@@ -38,9 +37,6 @@ import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.muzei.WeatherMuzeiSource;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,13 +53,13 @@ import java.net.URL;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
-public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements GoogleApiClient.ConnectionCallbacks {
+public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
   public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
   public static final String ACTION_DATA_UPDATED =
     "com.example.android.sunshine.app.ACTION_DATA_UPDATED";
   // Interval at which to sync with the weather, in seconds.
   // 60 seconds (1 minute) * 180 = 3 hours
-  public static final int SYNC_INTERVAL = 60 * 180;
+  public static final int SYNC_INTERVAL = 10;
   public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
   private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
   private static final int WEATHER_NOTIFICATION_ID = 3004;
@@ -81,7 +77,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
   private static final int INDEX_MAX_TEMP = 1;
   private static final int INDEX_MIN_TEMP = 2;
   private static final int INDEX_SHORT_DESC = 3;
-  private GoogleApiClient mGoogleApiClient;
 
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({LOCATION_STATUS_OK, LOCATION_STATUS_SERVER_DOWN, LOCATION_STATUS_SERVER_INVALID, LOCATION_STATUS_UNKNOWN, LOCATION_STATUS_INVALID})
@@ -94,16 +89,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
   public static final int LOCATION_STATUS_UNKNOWN = 3;
   public static final int LOCATION_STATUS_INVALID = 4;
 
-  public SunshineSyncAdapter(Context context, boolean autoInitialize) {
+  private GoogleApiClient mGoogleApiClient;
+
+  public SunshineSyncAdapter(Context context, boolean autoInitialize, GoogleApiClient mGoogleApiClient) {
     super(context, autoInitialize);
-
-    mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-      .addApi(Wearable.API)
-      .addConnectionCallbacks(this)
-      .addOnConnectionFailedListener(this)
-      .build();
-
-    mGoogleApiClient.connect();
+    this.mGoogleApiClient = mGoogleApiClient;
   }
 
   @Override
@@ -383,7 +373,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
         updateWidgets();
         updateMuzei();
         notifyWeather();
-        pushDataToWear();
       }
       Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
       setLocationStatus(getContext(), LOCATION_STATUS_OK);
@@ -410,34 +399,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
       Context context = getContext();
       context.startService(new Intent(ACTION_DATA_UPDATED)
         .setClass(context, WeatherMuzeiSource.class));
-    }
-  }
-
-  private void pushDataToWear() {
-    Context context = getContext();
-
-    String locationQuery = Utility.getPreferredLocation(context);
-
-    Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
-
-    // we'll query our contentProvider, as always
-    Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
-
-    if (cursor.moveToFirst()) {
-      int weatherId = cursor.getInt(INDEX_WEATHER_ID);
-      double high = cursor.getDouble(INDEX_MAX_TEMP);
-      double low = cursor.getDouble(INDEX_MIN_TEMP);
-
-      int iconId = Utility.getIconResourceForWeatherCondition(weatherId);
-      Resources resources = context.getResources();
-
-      PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/today-weather");
-
-      putDataMapRequest.getDataMap().putDouble("hight", high);
-      putDataMapRequest.getDataMap().putDouble("low", low);
-
-      PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
-      Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest);
     }
   }
 
@@ -541,7 +502,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
           //refreshing last sync
           SharedPreferences.Editor editor = prefs.edit();
           editor.putLong(lastNotificationKey, System.currentTimeMillis());
-          editor.commit();
+          editor.apply();
         }
         cursor.close();
       }
@@ -702,15 +663,5 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
     SharedPreferences.Editor spe = sp.edit();
     spe.putInt(c.getString(R.string.pref_location_status_key), locationStatus);
     spe.commit();
-  }
-
-  @Override
-  public void onConnected(@Nullable Bundle bundle) {
-    Log.d(LOG_TAG. "");
-  }
-
-  @Override
-  public void onConnectionSuspended(int i) {
-    Log.d(LOG_TAG. "");
   }
 }
