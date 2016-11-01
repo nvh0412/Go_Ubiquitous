@@ -39,7 +39,6 @@ public class WatchService extends IntentService implements
 
   @Override
   protected void onHandleIntent(Intent intent) {
-    Log.d(SERVICE_NAME, "onHandleIntent");
     if (intent != null
       && intent.getAction() != null
       && intent.getAction().equals(ACTION_UPDATE_WATCHFACE)) {
@@ -92,12 +91,12 @@ public class WatchService extends IntentService implements
 
   @Override
   public void onConnectionSuspended(int i) {
-
+    Log.d("WatchService", "Connection to GoogleAPI suspends, due to: " + i);
   }
 
   @Override
   public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-    Log.d("WatchService", "Connection to GoogleAPI fails, due to: " + connectionResult);
+    Log.e("WatchService", "Connection to GoogleAPI fails, due to: " + connectionResult);
   }
 
   @Override

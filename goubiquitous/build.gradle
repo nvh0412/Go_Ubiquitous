@@ -7,8 +7,8 @@ android {
 
   defaultConfig {
     applicationId "com.vagabond.goubiquitous"
-    minSdkVersion 21
-    targetSdkVersion 24
+    minSdkVersion 18
+    targetSdkVersion 22
     versionCode 1
     versionName "1.0"
   }
@@ -22,6 +22,6 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile 'com.google.android.gms:play-services-wearable:8.1.0'
   compile 'com.google.android.support:wearable:1.4.0'
-  compile 'com.google.android.gms:play-services-wearable:9.4.0'
 }

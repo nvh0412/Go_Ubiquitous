@@ -166,6 +166,8 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
 
       mCalendar = Calendar.getInstance();
       mDate = new Date();
+      mWeatherImage = BitmapFactory.decodeResource(getResources(),
+        R.mipmap.ic_launcher);
       initFormats();
     }
 
@@ -378,10 +380,16 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
       canvas.drawLine(x, mYOffset + mLineHeight * 2, x + 60, mYOffset + mLineHeight * 2, linePaint);
 
       // Weather
+      Bitmap resizedBitmap = Bitmap.createScaledBitmap(mWeatherImage, 40, 40, true);
+
       String maxTempString = mWeatherMaxTemp + "\u00b0";
       String minTempString = mWeatherMinTemp + "\u00b0";
+
+      float imgPosition = bounds.width() / 2 - resizedBitmap.getWidth() - 5;
       float maxTempPosition = bounds.width() / 2;
       float minTempPosition = bounds.width() / 2;
+
+      canvas.drawBitmap(resizedBitmap, imgPosition, mYOffset + mLineHeight * 3, new Paint());
       // MaxTemp
       canvas.drawText(maxTempString, maxTempPosition,
         mYOffset + mLineHeight * 3, mMaxTempPaint);
@@ -406,19 +414,6 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
     public void onConnected(@Nullable Bundle bundle) {
       Log.d(TAG, "onConnected: " + bundle);
       Wearable.DataApi.addListener(mGoogleApiClient, Engine.this);
-      updateWeatherDataItemAndUiOnStartup();
-    }
-
-    private void updateWeatherDataItemAndUiOnStartup() {
-      WatchFaceUtil.fetchConfigDataMap(mGoogleApiClient,
-        new WatchFaceUtil.FetchConfigDataMapCallback() {
-          @Override
-          public void onConfigDataMapFetched(DataMap startupData) {
-            WatchFaceUtil.putConfigDataItem(mGoogleApiClient, startupData);
-            invalidate();
-          }
-        }
-      );
     }
 
     @Override
