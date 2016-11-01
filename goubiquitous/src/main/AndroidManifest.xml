@@ -4,8 +4,6 @@
 
   <uses-feature android:name="android.hardware.type.watch"/>
 
-  <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
@@ -50,9 +48,13 @@
       <intent-filter>
         <!-- listeners receive events that match the action and data filters -->
         <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
-        <data android:scheme="wear" android:host="*" android:pathPrefix="/today-weather"/>
+        <data android:scheme="wear" android:host="*" android:pathPrefix="/weather"/>
       </intent-filter>
     </service>
+
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version"/>
   </application>
 
 </manifest>

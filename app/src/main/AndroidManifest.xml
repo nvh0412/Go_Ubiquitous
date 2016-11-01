@@ -50,6 +50,11 @@
     android:label="@string/app_name"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
+
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version" />
+
     <activity
       android:name=".MainActivity"
       android:label="@string/app_name"
@@ -188,16 +193,16 @@
       android:name=".gcm.RegistrationIntentService"
       android:exported="false">
     </service>
+
+    <!--Service that updates the wearable WatchFace-->
     <service
-      android:name=".wear.WearDataService"
-      android:enabled="true"
-      android:exported="true">
-      <intent-filter>
-        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
-        <data android:scheme="wear" android:host="*"
-              android:path="/start-activity" />
-      </intent-filter>
+      android:name=".WatchService"
+      android:exported="false">
     </service>
+
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version"/>
   </application>
 
 </manifest>

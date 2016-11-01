@@ -10,4 +10,6 @@
   <dimen name="digital_y_offset">80dp</dimen>
   <dimen name="digital_line_height">25dp</dimen>
   <dimen name="digital_config_color_picker_item_margin">32dp</dimen>
+  <dimen name="digital_temp_size_round">30dp</dimen>
+  <dimen name="digital_temp_size">25dp</dimen>
 </resources>
