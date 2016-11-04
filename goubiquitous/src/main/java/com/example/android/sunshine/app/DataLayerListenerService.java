@@ -1,4 +1,4 @@
-package com.vagabond.goubiquitous;
+package com.example.android.sunshine.app;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DataLayerListenerService extends WearableListenerService implements GoogleApiClient.OnConnectionFailedListener {
 
-  private static final String LOG_TAG = DataLayerListenerService.class.getSimpleName();
+  private static final String LOG_TAG = "DataLayer";
   private GoogleApiClient mGoogleApiClient;
   @Override
   public void onCreate() {
@@ -34,7 +34,7 @@ public class DataLayerListenerService extends WearableListenerService implements
 
   @Override
   public void onDataChanged(DataEventBuffer dataEventBuffer) {
-    LOGD(LOG_TAG, "onDataChanged: " + dataEventBuffer);
+    Log.d(LOG_TAG, "onDataChanged: " + dataEventBuffer);
     if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
       ConnectionResult connectionResult = mGoogleApiClient
         .blockingConnect(30, TimeUnit.SECONDS);
@@ -54,12 +54,6 @@ public class DataLayerListenerService extends WearableListenerService implements
         // the uri.
         Log.d(LOG_TAG, "DataItem:" + event.getDataItem().toString());
       }
-    }
-  }
-
-  public static void LOGD(final String tag, String message) {
-    if (Log.isLoggable(tag, Log.DEBUG)) {
-      Log.d(tag, message);
     }
   }
 

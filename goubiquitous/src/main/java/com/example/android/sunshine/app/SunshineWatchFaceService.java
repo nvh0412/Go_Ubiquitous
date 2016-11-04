@@ -1,4 +1,4 @@
-package com.vagabond.goubiquitous;
+package com.example.android.sunshine.app;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,7 +32,6 @@ import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -380,16 +379,16 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
       canvas.drawLine(x, mYOffset + mLineHeight * 2, x + 60, mYOffset + mLineHeight * 2, linePaint);
 
       // Weather
-      Bitmap resizedBitmap = Bitmap.createScaledBitmap(mWeatherImage, 40, 40, true);
+      Bitmap resizedBitmap = Bitmap.createScaledBitmap(mWeatherImage, 80, 80, true);
 
-      String maxTempString = mWeatherMaxTemp + "\u00b0";
-      String minTempString = mWeatherMinTemp + "\u00b0";
+      String maxTempString = String.valueOf(mWeatherMaxTemp);
+      String minTempString = String.valueOf(mWeatherMinTemp);
 
       float imgPosition = bounds.width() / 2 - resizedBitmap.getWidth() - 5;
       float maxTempPosition = bounds.width() / 2;
       float minTempPosition = bounds.width() / 2;
 
-      canvas.drawBitmap(resizedBitmap, imgPosition, mYOffset + mLineHeight * 3, new Paint());
+      canvas.drawBitmap(resizedBitmap, imgPosition, mYOffset + mLineHeight * 2, new Paint());
       // MaxTemp
       canvas.drawText(maxTempString, maxTempPosition,
         mYOffset + mLineHeight * 3, mMaxTempPaint);
@@ -434,7 +433,7 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
       for (DataEvent dataEvent : dataEventBuffer) {
         Log.d(TAG, "onDataChanged: DataEvent: " + dataEvent.getDataItem().toString());
         DataItem dataItem = dataEvent.getDataItem();
-        if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
+        if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
           DataItem item = dataEvent.getDataItem();
           if (dataItem.getUri().getPath().equals(KEY_PATH)) {
             processDataFor(item);

@@ -1,4 +1,4 @@
-package com.vagabond.goubiquitous;
+package com.example.android.sunshine.app;
 
 import android.graphics.Color;
 import android.net.Uri;

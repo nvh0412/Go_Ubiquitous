@@ -1,4 +1,4 @@
-package com.vagabond.goubiquitous;
+package com.example.android.sunshine.app;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
 
-import static com.vagabond.goubiquitous.DataLayerListenerService.LOGD;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
   private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -55,12 +54,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
   @Override
   public void onConnected(@Nullable Bundle bundle) {
-    LOGD(LOG_TAG, "onConnected(): Successfully connected to Google API client");
+    Log.d(LOG_TAG, "onConnected(): Successfully connected to Google API client");
   }
 
   @Override
   public void onConnectionSuspended(int i) {
-    LOGD(LOG_TAG, "onConnectionSuspended(): Connection to Google API client was suspended");
+    Log.d(LOG_TAG, "onConnectionSuspended(): Connection to Google API client was suspended");
   }
 
   @Override

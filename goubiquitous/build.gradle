@@ -6,7 +6,7 @@ android {
   buildToolsVersion "24.0.1"
 
   defaultConfig {
-    applicationId "com.vagabond.goubiquitous"
+    applicationId "com.example.android.sunshine.app"
     minSdkVersion 18
     targetSdkVersion 22
     versionCode 1
